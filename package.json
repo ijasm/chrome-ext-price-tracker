@@ -4,15 +4,15 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "package:popup": "webpack --config popup/webpack.config.js --watch && cp popup/index.html dist/popup.html",
-        "dev:popup": "npm run copy && ./node_modules/.bin/webpack-dev-server --config popup/webpack.config.js --inline --hot",
-        "package": "npm run copy && npm run package:popup",
-        "copy": "cp manifest.json dist/manifest.json"
+        "package": "npm run copy && webpack",
+        "dev": "./node_modules/.bin/webpack-dev-server --inline --hot",
+        "copy": "cp manifest.json dist/manifest.json && cp src/popup/popup.html dist/popup.html"
     },
     "keywords": [],
     "author": "ijasm",
     "license": "ISC",
     "devDependencies": {
+        "@types/chrome": "0.0.48",
         "@types/react": "^16.0.5",
         "@types/react-dom": "^15.5.4",
         "clean-webpack-plugin": "^0.1.16",
