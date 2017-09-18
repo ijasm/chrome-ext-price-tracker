@@ -8,10 +8,26 @@
         "48": "images/icon_unchecked_48.png",
         "16": "images/icon_unchecked_16.png"
     },
-    "browser_action": {
+    "page_action": {
         "default_title": "Sales Monitor",
         "default_popup": "popup.html"
     },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "exclude_globs": [
+                "*google.com*",
+                "*facebook.com*",
+                "*youtube.com*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
     "permissions": [
         "storage",
         "activeTab",

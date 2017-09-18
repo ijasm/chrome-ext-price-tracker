@@ -4,9 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "package": "npm run copy && webpack",
-        "dev": "./node_modules/.bin/webpack-dev-server --inline --hot",
-        "copy": "cp manifest.json dist/manifest.json && cp src/popup/popup.html dist/popup.html"
+        "start": "webpack",
+        "dev": "./node_modules/.bin/webpack-dev-server --inline --hot"
     },
     "keywords": [],
     "author": "ijasm",
@@ -16,6 +15,7 @@
         "@types/react": "^16.0.5",
         "@types/react-dom": "^15.5.4",
         "clean-webpack-plugin": "^0.1.16",
+        "copy-webpack-plugin": "^4.0.1",
         "css-loader": "^0.28.7",
         "node-sass": "^4.5.3",
         "sass-loader": "^6.0.6",
