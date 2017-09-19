@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         popup: "./src/popup/Popup.tsx",
         content: "./src/content_scripts/script.ts",
+        background: "./src/background/background.ts"
     },
     output: {
         filename: "[name].js",

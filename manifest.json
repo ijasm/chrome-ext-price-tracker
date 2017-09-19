@@ -12,6 +12,12 @@
         "default_title": "Sales Monitor",
         "default_popup": "popup.html"
     },
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
     "content_scripts": [
         {
             "matches": [

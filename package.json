@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "webpack",
+        "start": "webpack --watch",
         "dev": "./node_modules/.bin/webpack-dev-server --inline --hot"
     },
     "keywords": [],
