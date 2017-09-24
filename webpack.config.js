@@ -5,9 +5,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
-        popup: "./src/popup/Popup.tsx",
-        content: "./src/content_scripts/script.ts",
-        background: "./src/background/background.ts"
+        popup: "./src/popup",
+        content: "./src/content",
+        background: "./src/background"
     },
     output: {
         filename: "[name].js",
@@ -24,8 +24,9 @@ module.exports = {
         // new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, ".."), verbose: true })
         new CopyWebpackPlugin([
             { from: "manifest.json" },
-            { from: "./src/popup/popup.html" },
-            { from: "images", to: "images" }
+            { from: "./src/popup/index.html", to: "popup.html" },
+            { from: "images", to: "images" },
+            { from: "styles", to: "styles" }
         ])
     ],
     resolve: {
