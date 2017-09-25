@@ -3,7 +3,8 @@ import { MessageType, Message, sendMessage } from "../common/Message";
 import Popup from "./Popup";
 
 interface IState {
-  isSelectProductPriceState: boolean;
+  showPopup: boolean;
+  url: string;
 }
 
 export default class ContentPage extends Component<any, IState> {
@@ -11,19 +12,21 @@ export default class ContentPage extends Component<any, IState> {
     super();
 
     this.state = {
-      isSelectProductPriceState: false,
+      showPopup: false,
+      url: null,
     };
   }
 
   componentDidMount() {
     this.togglePageActionHideShowState();
     this.addChromeRuntimeMessageListeners();
+    this.getURL();
   }
 
   render() {
     return (
       <div>
-        {this.state.isSelectProductPriceState ? <Popup /> : null}
+        {this.state.showPopup ? <Popup pageURL={this.state.url} /> : null}
       </div>
     );
   }
@@ -43,7 +46,7 @@ export default class ContentPage extends Component<any, IState> {
       console.log("received message", JSON.stringify(request));
       switch (request.type) {
         case MessageType.PageActionClicked:
-          this.setState({ isSelectProductPriceState: true });
+          this.setState({ showPopup: true });
           break;
       }
     });
@@ -61,10 +64,16 @@ export default class ContentPage extends Component<any, IState> {
   private shopStringExistsInMetadata = (metaTags: Element[]) => {
     const shopStringExists = (value: Element, index: number, array: Element[]) => {
       const str = (value as HTMLMetaElement).content;
-      const strMatches = str.match(/\b(shop|buy)/i);
+      const strMatches = str.match(/\b(shop|buy|delivery|fashion|clothes|bags|shoes)/i);
       return strMatches !== null;
     };
 
     return metaTags.some(shopStringExists);
+  }
+
+  private getURL = () => {
+    sendMessage(MessageType.GetPageURL, null, (response) => {
+      this.setState({ url: response });
+    });
   }
 }

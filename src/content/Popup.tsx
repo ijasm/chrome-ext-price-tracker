@@ -3,17 +3,20 @@ import { MessageType, Message, sendMessage } from "../common/Message";
 
 import "./styles/styles";
 
+interface IProp {
+  pageURL: string;
+}
 interface IState {
-  priceElement: any;
+  price: number;
   error: string;
 }
 
-export default class Popup extends Component<any, IState> {
+export default class Popup extends Component<IProp, IState> {
   constructor(props) {
     super(props);
 
     this.state = {
-      priceElement: null,
+      price: null,
       error: null,
     };
   }
@@ -25,46 +28,91 @@ export default class Popup extends Component<any, IState> {
   render() {
     return (
       <div id="container">
-        {this.state.error ? <div>{this.state.error}</div> : this.state.priceElement ? <div>Product tracked! Current price at {this.state.priceElement.innerText}.</div> : "To monitor product price, please click on the price that you would like to monitor."}
+        {this.state.error ? <div>{this.state.error}</div> : this.state.price ? <div>Product tracked! Current price at {this.state.price}.</div> : "To monitor product price, please click on the price that you would like to monitor."}
       </div>
     );
   }
 
   private addClickEventListenerToDOM = () => {
     document.addEventListener("click", (event) => {
-      if (this.isLegitProductPrice(event.target as any)) {
-        this.setState({ priceElement: event.target, error: null });
+      const clickedElement: any = event.target;
+      if (this.isLegitProductPrice(clickedElement)) {
+        this.trackProduct(clickedElement);
       } else {
-        this.setState({ priceElement: null, error: "No product price detected, please click on product price!" });
+        this.setState({ price: null, error: "No product price detected, please click on product price!" });
       }
     });
   }
 
   private isLegitProductPrice = (clickedElement: HTMLElement): boolean => {
     const priceStr = clickedElement.innerText;
-    const priceStrMatches = priceStr.match(/^(([A-z]{2,3}\$?|[$£€¥₩฿])\s?)?(\d{1,3}(\.|,|\s)?)*\d{1,3}((\.|,)\d\d?)?(\s?([A-z]{2,3}\$?|[$£€¥₩฿]))?$/i);
+    const priceStrMatches = priceStr.match(/^((([A-z]{2,3}\$?(\s?[$£€¥₩฿])?)|[$£€¥₩฿])\s?)?(\d{1,3}(\.|,|\s)?)*\d{1,3}((\.|,)\d\d?)?(\s?([A-z]{2,3}\$?|[$£€¥₩฿]))?$/);
 
     return priceStrMatches !== null;
   }
 
   private trackProduct = (priceElement: HTMLElement) => {
-    const price = this.extractPrice(priceElement);
-
-    // sendMessage(MessageType.TrackProduct);
-    // product html element: tagname, classname, id
-    // product url
-    // product original price
+    const priceString = priceElement.innerText;
+    const price = this.extractPrice(priceString);
+    this.setState({ price, error: null });
   }
 
-  private extractPrice = (priceElement: HTMLElement): number => {
+  private extractPrice = (priceString: string): number => {
     // match regex to extract digits
+    const priceMatches = priceString.match(/(\d{1,3}(\.|,|\s)?)*\d{1,3}((\.|,)\d\d?)?/);
+
+    // TODO: check for null
+    let price = priceMatches[0];
+
     // get rid of white space
-    // if period or comma exists, check if one or multiple
-    // if multiple, remove
-    // if single, check how many digits behind (2 or less, 3)
-    // if period and comma exists, check position
-    // if period appears first, remove all periods, then convert comma to period
-    // if comma appears first, remove all comma
-    return 1000;
+    price = price.replace(" ", "");
+
+    const periodMatches = price.match(/\./g);
+    const commaMatches = price.match(/,/g);
+
+    // if period and comma exists in price string
+    if (commaMatches !== null && periodMatches !== null) {
+
+      // if period appears first
+      if (price.indexOf(".") < price.indexOf(",")) {
+        // remove period
+        price = price.replace(".", "");
+        // replace comma with period
+        price = price.replace(",", ".");
+
+        // if comma appears first
+      } else {
+        // remove comma
+        price = price.replace(",", "");
+      }
+      // if period or comma exists in price string
+    } else if (commaMatches !== null || periodMatches !== null) {
+      let char;
+      let matches;
+      if (commaMatches !== null) {
+        char = ",";
+        matches = commaMatches;
+      } else {
+        char = ".";
+        matches = periodMatches;
+      }
+
+      // if multiple char occurences
+      if (matches.length > 1) {
+        // remove char if multiple occurences
+        price = price.replace(char, "");
+        // if single char occurences
+      } else {
+        // check how many digits behind
+        if (price.substring(price.indexOf(char) + 1).length > 2) {
+          // remove char if there are more than 2 digits after char
+          price = price.replace(char, "");
+        } else {
+          // replace char with period if there are 2 digits or less after char
+          price = price.replace(char, ".");
+        }
+      }
+    }
+    return parseFloat(price);
   }
 }

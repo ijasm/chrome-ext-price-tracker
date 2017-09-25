@@ -13,6 +13,11 @@ chrome.runtime.onMessage.addListener((request: Message, sender, sendResponse) =>
         chrome.pageAction.hide(tabs[0].id);
       });
       break;
+    case MessageType.GetPageURL:
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        sendResponse(tabs[0].url);
+      });
+      return true;
   }
 });
 

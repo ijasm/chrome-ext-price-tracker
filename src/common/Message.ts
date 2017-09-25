@@ -4,6 +4,7 @@ export enum MessageType {
   PageActionClicked,
   ProductPriceClicked,
   TrackProduct,
+  GetPageURL,
 }
 
 export class Message {
