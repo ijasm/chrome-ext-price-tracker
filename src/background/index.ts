@@ -1,4 +1,7 @@
 import { MessageType, Message, sendMessageToTab } from "../common/Message";
+import { isProductInStorage } from "../common/Storage";
+
+chrome.storage.sync.set({ products: [] });
 
 chrome.runtime.onMessage.addListener((request: Message, sender, sendResponse) => {
   console.log("background receive message: ", JSON.stringify(request));
@@ -6,6 +9,12 @@ chrome.runtime.onMessage.addListener((request: Message, sender, sendResponse) =>
     case MessageType.ShowPageAction:
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.pageAction.show(tabs[0].id);
+
+        isProductInStorage(tabs[0].url, (response) => {
+          if (response) {
+            changePageActionIcon(tabs[0].id);
+          }
+        });
       });
       break;
     case MessageType.HidePageAction:
@@ -18,15 +27,29 @@ chrome.runtime.onMessage.addListener((request: Message, sender, sendResponse) =>
         sendResponse(tabs[0].url);
       });
       return true;
+    case MessageType.ProductTracked:
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        changePageActionIcon(tabs[0].id);
+      });
+      break;
   }
 });
 
+const changePageActionIcon = (tabId: number) => {
+  chrome.pageAction.setIcon({
+    tabId, path: "images/icon_checked_128.png",
+  });
+};
+
 chrome.pageAction.onClicked.addListener((tab) => {
   console.log("page action clicked, tab id: ", tab.id);
-
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     sendMessageToTab(tabs[0].id, MessageType.PageActionClicked);
   });
+});
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  console.log("storage changes detected: ", changes);
 });
 
 // chrome.tabs.onActivated.addListener((activeInfo) => {
@@ -39,9 +62,4 @@ chrome.pageAction.onClicked.addListener((tab) => {
   //     }
   //   });
   // });
-// });
-
-// listen for current tab to be changed
-// chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
-//   // alert("tab updated. tabID: " + JSON.stringify(tabID) + " changeInfo: " + JSON.stringify(changeInfo) + " tab: " + JSON.stringify(tab));
 // });

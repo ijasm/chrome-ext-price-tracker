@@ -3,7 +3,7 @@ export enum MessageType {
   HidePageAction,
   PageActionClicked,
   ProductPriceClicked,
-  TrackProduct,
+  ProductTracked,
   GetPageURL,
 }
 

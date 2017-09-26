@@ -26,7 +26,7 @@ export default class ContentPage extends Component<any, IState> {
   render() {
     return (
       <div>
-        {this.state.showPopup ? <Popup pageURL={this.state.url} /> : null}
+        {this.state.showPopup ? <Popup productURL={this.state.url} /> : null}
       </div>
     );
   }
@@ -72,8 +72,8 @@ export default class ContentPage extends Component<any, IState> {
   }
 
   private getURL = () => {
-    sendMessage(MessageType.GetPageURL, null, (response) => {
-      this.setState({ url: response });
+    sendMessage(MessageType.GetPageURL, null, (url) => {
+      this.setState({ url });
     });
   }
 }
