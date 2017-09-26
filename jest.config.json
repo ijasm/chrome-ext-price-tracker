@@ -1,0 +1,21 @@
+{
+  "testMatch": [
+    "**/__tests__/*.(ts|tsx|js)"
+  ],
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js"
+  ],
+  "modulePaths": [
+    "src"
+  ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+  },
+  "moduleNameMapper": {
+    "\\.(css|less|scss)$": "identity-obj-proxy"
+  },
+  "verbose": true,
+  "notify": true
+}

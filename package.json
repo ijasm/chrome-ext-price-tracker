@@ -5,21 +5,26 @@
     "main": "index.js",
     "scripts": {
         "start": "webpack --watch",
-        "dev": "./node_modules/.bin/webpack-dev-server --inline --hot"
+        "dev": "./node_modules/.bin/webpack-dev-server --inline --hot",
+        "test": "./node_modules/.bin/jest --config=jest.config.json"
     },
     "keywords": [],
     "author": "ijasm",
     "license": "ISC",
     "devDependencies": {
         "@types/chrome": "0.0.48",
+        "@types/jest": "^21.1.1",
         "@types/react": "^16.0.5",
         "@types/react-dom": "^15.5.4",
         "clean-webpack-plugin": "^0.1.16",
         "copy-webpack-plugin": "^4.0.1",
         "css-loader": "^0.28.7",
+        "identity-obj-proxy": "^3.0.0",
+        "jest": "^21.1.0",
         "node-sass": "^4.5.3",
         "sass-loader": "^6.0.6",
         "style-loader": "^0.18.2",
+        "ts-jest": "^21.0.1",
         "ts-loader": "^2.3.7",
         "tslint": "^5.7.0",
         "tslint-react": "^3.2.0",

@@ -4,9 +4,14 @@
         "tslint-react"
     ],
     "jsRules": {
-        "indent": [true, "tabs"],
+        "indent": [
+            true,
+            "tabs"
+        ],
         "no-empty": false,
-        "ordered-imports": [false],
+        "ordered-imports": [
+            false
+        ],
         "object-literal-sort-keys": false,
         "space-before-function-paren": [
             true,
@@ -18,18 +23,39 @@
         ]
     },
     "rules": {
-        "semicolon": [true, "always"],
-        "indent": [true],
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "indent": [
+            true
+        ],
         "class-name": true,
-        "variable-name": ["ban-keywords", "check-format"],
-        "ordered-imports": [false],
-        "member-ordering": [false],
+        "variable-name": [
+            "ban-keywords",
+            "check-format"
+        ],
+        "ordered-imports": [
+            false
+        ],
+        "member-ordering": [
+            false
+        ],
         "object-literal-sort-keys": false,
-        "max-line-length": [false],
-        "no-namespace": [false],
+        "max-line-length": [
+            false
+        ],
+        "no-namespace": [
+            false
+        ],
         "no-var-requires": false,
-        "interface-name": [false],
-        "member-access": ["check-accessor"]
+        "interface-name": [
+            false
+        ],
+        "member-access": [
+            "check-accessor"
+        ],
+        "max-classes-per-file": false
     },
     "rulesDirectory": []
 }
